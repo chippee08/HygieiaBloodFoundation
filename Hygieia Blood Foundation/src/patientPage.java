@@ -304,3 +304,4 @@ public class patientPage extends UserAndPass implements ActionListener{
 	}
 	
 }
+//added functionalities on calculate bmi button and compatible blood type
