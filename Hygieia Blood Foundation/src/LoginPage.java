@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,6 +18,7 @@ public class LoginPage implements ActionListener{
 	JFrame frame = new JFrame();
 	JButton loginButton = new JButton("Login");
 	JButton resetButton = new JButton("Reset");
+	JButton signupButton = new JButton("Sign Up");
 	JTextField usernameField = new JTextField();
 	JPasswordField userpasswordField = new JPasswordField();
 	JLabel usernameLabel = new JLabel("Username:");
@@ -29,13 +31,15 @@ public class LoginPage implements ActionListener{
 	
 	HashMap<String, String> logininfo = new HashMap<String, String>();
 
+	
 	LoginPage(HashMap<String, String> loginInfoOriginal){
+		
 		
 		//image settings
 		Image new_logo = logo.getImage();
-		Image modifiedLogo = new_logo.getScaledInstance(750, 300, java.awt.Image.SCALE_SMOOTH);
+		Image modifiedLogo = new_logo.getScaledInstance(760, 330, java.awt.Image.SCALE_SMOOTH);
 		logo = new ImageIcon(modifiedLogo);
-		pictureLabel.setBounds(300, 75, 750, 300);
+		pictureLabel.setBounds(280, 60, 760, 330);
 		pictureLabel.setIcon(logo);
 		
 		logininfo = loginInfoOriginal;
@@ -44,7 +48,7 @@ public class LoginPage implements ActionListener{
 		usernameLabel.setBounds(500, 400, 75, 25);
 		userpasswordLabel.setBounds(500, 450, 75, 25);
 		
-		messageLabel.setBounds(570, 350, 250, 35);
+		messageLabel.setBounds(570, 600, 250, 35);
 		messageLabel.setFont(new Font(null, Font.PLAIN, 25));
 		
 		//field settings
@@ -60,7 +64,12 @@ public class LoginPage implements ActionListener{
 		resetButton.setFocusable(false);
 		resetButton.addActionListener(this);
 		
+		signupButton.setBounds(620, 550, 100, 25);
+		signupButton.setFocusable(false);
+		signupButton.addActionListener(this);
+		
 		//frame settings
+		frame.add(signupButton);
 		frame.add(usernameLabel);
 		frame.add(userpasswordLabel);
 		frame.add(messageLabel);
@@ -80,8 +89,15 @@ public class LoginPage implements ActionListener{
 		
 	}
 
+	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		if(e.getSource() == signupButton) {
+			frame.dispose();
+			SignupPage signupPage = new SignupPage();
+		}
 		
 		if(e.getSource() == resetButton) {
 			usernameField.setText("");
@@ -110,6 +126,7 @@ public class LoginPage implements ActionListener{
 				messageLabel.setForeground(Color.red);
 				messageLabel.setText("Username not found!");
 			}
+			
 		}
 		
 	}
