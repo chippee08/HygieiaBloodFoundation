@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,12 +11,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-public class donorPage implements ActionListener{
+public class donorPage extends UserAndPass implements ActionListener{
 
 	JFrame frame = new JFrame();
 	JButton backButton = new JButton();
+	JButton submitButton = new JButton("Submit");
+	JButton resetButton = new JButton("Reset");
+	JButton calculateButton = new JButton("Calculate");
 	ImageIcon image = new ImageIcon("company_logo.png");
 	ImageIcon logo = new ImageIcon("hygieia_logo.png");
+	ImageIcon GoBack = new ImageIcon("backButton.png");
 	JTextField firstNameField = new JTextField();
 	JTextField lastNameField = new JTextField();
 	JTextField middleNameField = new JTextField();
@@ -26,7 +31,8 @@ public class donorPage implements ActionListener{
 	JTextField height = new JTextField();
 	JTextField weight = new JTextField();
 	JTextField bmi = new JTextField();
-	JTextField blood = new JTextField();
+	JTextField bmi_classField = new JTextField();
+	JTextField bloodType_comp = new JTextField();
 	JLabel firstnameLabel = new JLabel("First name:");
 	JLabel lastnameLabel = new JLabel("Surname:");
 	JLabel middlenameLabel = new JLabel("Middle Name:");
@@ -34,15 +40,17 @@ public class donorPage implements ActionListener{
 	JLabel sex_text = new JLabel("Sex:");
 	JLabel add = new JLabel("Address:");
 	JLabel contact = new JLabel("Contact number:");
-	JLabel height_text = new JLabel("Height (cm):");
+	JLabel height_text = new JLabel("Height (m):");
 	JLabel weight_text = new JLabel("Weight (kg):");
 	JLabel bmi_text = new JLabel("BMI:");
+	JLabel bmi_class = new JLabel("BMI Classification:");
 	JLabel blood_text = new JLabel("Blood Type:");
+	JLabel compatibleType = new JLabel("Compatible Type:");
 	JLabel ID = new JLabel("Valid ID:");
 	JLabel Health = new JLabel("Health Status:");
 	JLabel personal_info = new JLabel("Personal Information");
 	JLabel medical_info = new JLabel("Medical Information");
-	JLabel donorpage = new JLabel("Donor Page");
+	JLabel donorpage = new JLabel("DONOR PAGE");
 	JLabel Tattoo = new JLabel("Has Tattoo:");
 	
 	String[] IDs = {"<Select an option>", "National ID", "Driver's License", "Passport", "Senior Citezen ID", "Student ID"};
@@ -53,13 +61,38 @@ public class donorPage implements ActionListener{
 	JComboBox HealthStat = new JComboBox(HealthS);
 	
 	
-	String[] HTattoo = {"<Select an option>", "Yes", "No"};
+	String[] HTattoo = {"<Select an option>", "Yes(Less than 1 year)", "Yes(More than 1 year)" ,"No"};
 	JComboBox TattooH = new JComboBox(HTattoo);
+	
+	String[] bloodType = {"<Select an option>", "AB+", "AB-", "A+", "A-", "B+", "B-", "O+", "O-"};
+	JComboBox blood = new JComboBox(bloodType);
+	
 	
 	
 	donorPage(){
 		
-		donorpage.setBounds(580, 50, 300, 35);
+		Image new_back = GoBack.getImage();
+		Image modifiedBack = new_back.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+		GoBack = new ImageIcon(modifiedBack);
+		backButton.setBounds(10, 10, 25, 25);
+		backButton.setIcon(GoBack);
+		backButton.setBackground(new Color(0xE7DECC));
+		backButton.setFocusable(false);
+		backButton.addActionListener(this);
+		
+		submitButton.setBounds(444, 380, 100, 25);
+		submitButton.setFocusable(false);
+		submitButton.addActionListener(this);
+		
+		resetButton.setBounds(444, 420, 100, 25);
+		resetButton.setFocusable(false);
+		resetButton.addActionListener(this);
+		
+		calculateButton.setBounds(444, 505, 100, 25);
+		calculateButton.setFocusable(false);
+		calculateButton.addActionListener(this);
+		
+		donorpage.setBounds(580, 50, 300, 45);
 		donorpage.setFont(new Font(null, Font.PLAIN, 35));
 		
 		medical_info.setBounds(150, 400, 260, 35);
@@ -95,6 +128,11 @@ public class donorPage implements ActionListener{
 		contact.setBounds(100, 325, 250, 35);
 		contact.setFont(new Font(null, Font.PLAIN, 15));
 		contact_num.setBounds(222, 330, 200, 25);
+	
+		ID.setBounds(100, 355, 250, 35);
+		ID.setFont(new Font(null, Font.PLAIN, 15));
+		vID.setBounds(222, 360, 200, 25);
+		vID.addActionListener(this);
 		
 		height_text.setBounds(100, 440, 250, 35);
 		height_text.setFont(new Font(null, Font.PLAIN, 15));
@@ -107,33 +145,41 @@ public class donorPage implements ActionListener{
 		bmi_text.setBounds(100, 500, 250, 35);
 		bmi_text.setFont(new Font(null, Font.PLAIN, 15));
 		bmi.setBounds(222, 505, 200, 25);
+		bmi.setEditable(false);
 		
-		blood_text.setBounds(100, 530, 250, 35);
+		bmi_class.setBounds(100, 530, 250, 35);
+		bmi_class.setFont(new Font(null, Font.PLAIN, 15));
+		bmi_classField.setBounds(222, 535, 200, 25);
+		bmi_classField.setEditable(false);
+		
+		blood_text.setBounds(100, 560, 250, 35);
 		blood_text.setFont(new Font(null, Font.PLAIN, 15));
-		blood.setBounds(222, 535, 200, 25);
+		blood.setBounds(222, 565, 200, 25);
+		blood.addActionListener(this);
 		
+		compatibleType.setBounds(100, 590, 250, 35);
+		compatibleType.setFont(new Font(null, Font.PLAIN, 15));
+		bloodType_comp.setBounds(222, 595, 200, 25);
+		bloodType_comp.setEditable(false);
 		
-		
-		ID.setBounds(100, 355, 250, 35);
-		ID.setFont(new Font(null, Font.PLAIN, 15));
-		vID.setBounds(222, 360, 200, 25);
-		vID.addActionListener(this);
-		
-		
+		Tattoo.setBounds(100, 620, 250, 35);
+		Tattoo.setFont(new Font(null, Font.PLAIN, 15));
+		TattooH.setBounds(222, 625, 200, 25);
+		TattooH.addActionListener(this);
 
-		Health.setBounds(100, 590, 250, 35);
+		Health.setBounds(100, 650, 250, 35);
 		Health.setFont(new Font(null, Font.PLAIN, 15));
-		HealthStat.setBounds(222, 595, 200, 25);
+		HealthStat.setBounds(222, 655, 200, 25);
 		HealthStat.addActionListener(this);
 		
-		
-		Tattoo.setBounds(100, 560, 250, 35);
-		Tattoo.setFont(new Font(null, Font.PLAIN, 15));
-		TattooH.setBounds(222, 565, 200, 25);
-		TattooH.addActionListener(this);
-		
-		
-		
+		frame.add(bloodType_comp);
+		frame.add(compatibleType);
+		frame.add(bmi_classField);
+		frame.add(bmi_class);
+		frame.add(calculateButton);
+		frame.add(resetButton);
+		frame.add(submitButton);
+		frame.add(backButton);
 		frame.add(TattooH);
 		frame.add(Tattoo);
 		frame.add(donorpage);
@@ -174,18 +220,107 @@ public class donorPage implements ActionListener{
 		frame.setResizable(false);
 		frame.setLayout(null);
 		frame.setVisible(true);
+		
 	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource() == backButton) {
-			frame.dispose();
-			HomePage homepage = new HomePage(null); 
+			frame.hide();
+			String username = "";
+			HomePage homepage = new HomePage(username); 
 		}
-		
+		if(e.getSource() == resetButton) {
+			firstNameField.setText("");
+			lastNameField.setText("");
+			middleNameField.setText("");
+			age.setText("");
+			sex.setText("");
+			address.setText("");
+			contact_num.setText("");
+			vID.setSelectedItem(IDs[0]);
+			height.setText("");
+			weight.setText("");
+			bmi.setText("");
+			blood.setSelectedItem(bloodType[0]);
+			TattooH.setSelectedItem(HTattoo[0]);
+		}
+		if(e.getSource() == calculateButton) {
+			double hght, wght, total_bmi;
+			
+			hght = Double.valueOf(height.getText());
+			wght = Double.valueOf(weight.getText());
+			
+			total_bmi = wght / (hght * hght);
+			if(total_bmi < 18.5) {
+				bmi.setText("" + total_bmi);
+				bmi.setEditable(false);
+				bmi_classField.setText("Underweight");
+				bmi_classField.setEditable(false);
+			}
+			else if(total_bmi >= 18.5 && total_bmi < 25) {
+				bmi.setText("" + total_bmi);
+				bmi.setEditable(false);
+				bmi_classField.setText("Normal");
+				bmi_classField.setEditable(false);
+			}
+			else if(total_bmi >= 25.0 && total_bmi < 30) {
+				bmi.setText("" + total_bmi);
+				bmi.setEditable(false);
+				bmi_classField.setText("Overweight");
+				bmi_classField.setEditable(false);
+			}
+			else {
+				bmi.setText("" + total_bmi);
+				bmi.setEditable(false);
+				bmi_classField.setText("Obese");
+				bmi_classField.setEditable(false);
+			}
+			
+		}
+		if(e.getSource() == blood) {
+			if(blood.getSelectedItem() == bloodType[1]) {
+				bloodType_comp.setText("AB+");
+				bloodType_comp.setEditable(false);
+			}
+			else if(blood.getSelectedItem() == bloodType[2]) {
+				bloodType_comp.setText("AB+, AB-");
+				bloodType_comp.setEditable(false);
+			}
+			else if(blood.getSelectedItem() == bloodType[3]) {
+				bloodType_comp.setText("AB+, A+");
+				bloodType_comp.setEditable(false);
+			}
+			else if(blood.getSelectedItem() == bloodType[4]) {
+				bloodType_comp.setText("AB+, AB-, A+, A-" );
+				bloodType_comp.setEditable(false);
+			}
+			else if(blood.getSelectedItem() == bloodType[5]) {
+				bloodType_comp.setText("AB+, B+");
+				bloodType_comp.setEditable(false);
+			}
+			else if(blood.getSelectedItem() == bloodType[6]) {
+				bloodType_comp.setText("AB+, AB-, B+, B-");
+				bloodType_comp.setEditable(false);
+			}
+			else if(blood.getSelectedItem() == bloodType[7]) {
+				bloodType_comp.setText("AB+, A+, B+, O+");
+				bloodType_comp.setEditable(false);
+			}
+			else if(blood.getSelectedItem() == bloodType[8]) {
+				bloodType_comp.setText("AB+, AB-, A+, A-, B+, B-, O+, O-");
+				bloodType_comp.setEditable(false);
+			}
+			else {
+				bloodType_comp.setText("Please select an option.");
+				bloodType_comp.setEditable(false);
+			}
+		}
 	}
-	
 }
+	
+
 
 //new
 //added height, weight, BMI, Blood Type, Has Tattoo, Health Status
