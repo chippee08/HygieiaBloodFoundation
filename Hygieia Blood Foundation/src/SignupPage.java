@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,13 +17,28 @@ public class SignupPage implements ActionListener{
 	JLabel usernameLabel = new JLabel("Create Username:");
 	JLabel userpasswordLabel = new JLabel("Create Password:");
 	JLabel pictureLabel = new JLabel();
+	JLabel messageLabel = new JLabel();
 	ImageIcon image = new ImageIcon("company_logo.png");
-	ImageIcon logo = new ImageIcon("hygieia_logo.png");	
+	ImageIcon logo = new ImageIcon("hygieia_logo.png");
+	ImageIcon GoBack = new ImageIcon("backButton.png");
 	JTextField usernameField = new JTextField();
 	JPasswordField userpasswordField = new JPasswordField();
+	JButton backButton = new JButton();
 	JButton createButton = new JButton("Create Account!");
 	
 	SignupPage(){
+		
+		Image new_back = GoBack.getImage();
+		Image modifiedBack = new_back.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+		GoBack = new ImageIcon(modifiedBack);
+		backButton.setBounds(10, 10, 25, 25);
+		backButton.setIcon(GoBack);
+		backButton.setBackground(new Color(0xE7DECC));
+		backButton.setFocusable(false);
+		backButton.addActionListener(this);
+		
+		messageLabel.setBounds(570, 600, 450, 35);
+		messageLabel.setFont(new Font(null, Font.PLAIN, 25));
 		
 		createButton.setBounds(620, 550, 200, 25);
 		createButton.setFocusable(false);
@@ -40,6 +56,7 @@ public class SignupPage implements ActionListener{
 		pictureLabel.setBounds(280, 60, 760, 330);
 		pictureLabel.setIcon(logo);
 		
+		frame.add(messageLabel);
 		frame.add(createButton);
 		frame.add(pictureLabel);
 		frame.add(usernameLabel);
@@ -58,7 +75,13 @@ public class SignupPage implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
+		if(e.getSource() == backButton) {
+			frame.dispose();
+			HomePage homepage = new HomePage(null); 
+		}
+		if(e.getSource() == createButton) {
+			messageLabel.setForeground(Color.green);
+			messageLabel.setText("Account successfully created!");
+		}
 	}
 }
